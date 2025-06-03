@@ -2,9 +2,9 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { PeopleModule } from './basic/people/people.module';
 import { DBConfigService } from './config/db.config.service';
+import { ConsultancyModule } from './consultancy/consultancy.module';
 
 @Module({
   imports: [
@@ -15,8 +15,10 @@ import { DBConfigService } from './config/db.config.service';
       useClass: DBConfigService,
       inject: [ConfigService],
     }),
+    PeopleModule,
+    ConsultancyModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}

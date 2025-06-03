@@ -11,7 +11,7 @@ import { State } from './state.entity';
 @Entity({ name: 'cidade' })
 export class City {
   @PrimaryGeneratedColumn()
-  id: string;
+  id: number;
 
   @Column({ name: 'nome', length: 100, nullable: false })
   name: string;
