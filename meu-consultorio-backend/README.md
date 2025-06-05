@@ -8,6 +8,7 @@ Este é o backend do sistema Meu Consultório, uma aplicação para gerenciament
 - **TypeORM**: ORM (Object-Relational Mapping) para TypeScript e JavaScript
 - **MySQL**: Sistema de gerenciamento de banco de dados relacional
 - **TypeScript**: Linguagem de programação tipada que compila para JavaScript
+- **Zod**: Biblioteca de validação de esquemas com inferência de tipos TypeScript
 
 ## Estrutura do Projeto
 
@@ -19,27 +20,123 @@ O projeto está organizado nas seguintes entidades principais:
 
 ## Endpoints
 
-### Criar uma Clínica (POST /consultancy)
+### Consultórios (Consultancy)
 
-Exemplo de payload para criar uma nova clínica:
+#### Listar Consultórios (GET /consultancy)
+
+Retorna a lista de todos os consultórios cadastrados.
+
+Exemplo de resposta:
+
+```json
+[
+  {
+    "id": "5b6ca0ea-7652-4782-8513-127646d6a6b0",
+    "name": "Nome da Clinica",
+    "email": "email@exemplo.com",
+    "phone": 1234567890,
+    "whatsapp": 1234567890,
+    "status": true,
+    "address": {
+      "street": "Rua Exemplo",
+      "number": 123,
+      "complement": null,
+      "neighborhood": "Centro",
+      "cep": "12345-678",
+      "cityId": "1"
+    },
+    "cnpj": "12345678000190",
+    "razao_social": "Nome da Empresa LTDA",
+    "createdAt": "2024-04-06T21:00:00.000Z",
+    "updatedAt": null
+  }
+]
+```
+
+#### Buscar Consultório por ID (GET /consultancy/{id})
+
+Retorna os detalhes de um consultório específico.
+
+Exemplo de resposta:
 
 ```json
 {
-  "name": "Clínica Saúde Total",
+  "id": "5b6ca0ea-7652-4782-8513-127646d6a6b0",
+  "name": "Nome da Clinica",
+  "email": "email@exemplo.com",
+  "phone": 1234567890,
+  "whatsapp": 1234567890,
+  "status": true,
   "address": {
-    "street": "Avenida Principal",
-    "number": 1234,
-    "complement": "Sala 301",
+    "street": "Rua Exemplo",
+    "number": 123,
+    "complement": null,
     "neighborhood": "Centro",
     "cep": "12345-678",
     "cityId": "1"
   },
-  "email": "contato@clinicasaudetotal.com.br",
-  "whatsapp": 11999999999,
-  "phone": 1133333333,
-  "status": true
+  "cnpj": "12345678000190",
+  "razao_social": "Nome da Empresa LTDA",
+  "createdAt": "2024-04-06T21:00:00.000Z",
+  "updatedAt": null
 }
 ```
+
+#### Criar Consultório (POST /consultancy)
+
+Cria um novo consultório.
+
+Payload:
+
+```json
+{
+  "name": "Nome da Clinica",
+  "email": "email@exemplo.com",
+  "phone": 1234567890,
+  "whatsapp": 1234567890,
+  "status": true,
+  "address": {
+    "street": "Rua Exemplo",
+    "number": 123,
+    "complement": null,
+    "neighborhood": "Centro",
+    "cep": "12345-678",
+    "cityId": 1
+  },
+  "cnpj": "12.345.678/0001-90",
+  "razao_social": "Nome da Empresa LTDA"
+}
+```
+
+#### Atualizar Consultório (PUT /consultancy/{id})
+
+Atualiza um consultório existente.
+
+Payload:
+
+```json
+{
+  "name": "Nome da Clinica Atualizado",
+  "email": "email.novo@exemplo.com",
+  "phone": 1234567890,
+  "whatsapp": 1234567890,
+  "status": true,
+  "address": {
+    "street": "Nova Rua",
+    "number": 456,
+    "complement": "Sala 123",
+    "neighborhood": "Novo Bairro",
+    "cep": "12345-678",
+    "cityId": 2
+  },
+  "cnpj": "12.345.678/0001-90",
+  "razao_social": "Novo Nome da Empresa LTDA"
+}
+```
+
+#### Excluir Consultório (DELETE /consultancy/{id})
+
+Remove um consultório do sistema.
 
 ## Configuração do Ambiente
 

@@ -1,11 +1,15 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 
 import { Address } from '../basic/address/address.entity';
 import { People } from '../basic/people/people.entity';
 import { PeopleService } from '../basic/people/people.service';
+import { StringUtil } from './../utils/stringUtil.util';
 import { Consultancy } from './consultancy.entity';
 import { ConsultancyRepository } from './consultancy.repository';
-import { CreateConsultancyDto } from './dto/createConsultancyDto';
+import { ConsultancyDto } from './dto/consultancy.dto';
+import { CreateConsultancyDto } from './dto/createConsultancy.dto';
+import { ListConsultancyDto } from './dto/listConsultancy.dto';
+import { UpdateConsultancyDto } from './dto/updateConsultancy.dto';
 
 @Injectable()
 export class ConsultancyService {
@@ -15,11 +19,18 @@ export class ConsultancyService {
   ) {}
 
   async listAll() {
-    return this.consultancyRepository.findAll();
+    const list = await this.consultancyRepository.findAll();
+    return list.map(
+      (consultancy: Consultancy) => new ListConsultancyDto(consultancy),
+    );
   }
 
   async findById(id: string) {
-    return this.consultancyRepository.findById(id);
+    const consultancy = await this.consultancyRepository.findById(id);
+    if (!consultancy) {
+      throw new NotFoundException('Consultório não encontrado');
+    }
+    return new ConsultancyDto(consultancy);
   }
 
   async create(createConsultancyDto: CreateConsultancyDto) {
@@ -47,18 +58,60 @@ export class ConsultancyService {
     // Depois, cria o consultório
     const consultancy = new Consultancy();
     consultancy.id = savedPeople.id;
-    consultancy.cnpj = createConsultancyDto.cnpj;
+    consultancy.cnpj = StringUtil.cleanCNPJ(createConsultancyDto.cnpj);
     consultancy.razao_social = createConsultancyDto.razao_social;
     consultancy.people = savedPeople;
 
     return this.consultancyRepository.create(consultancy);
   }
 
-  async update(id: string, consultancy: Partial<Consultancy>) {
+  async update(id: string, updateConsultancyDto: UpdateConsultancyDto) {
+    const consultancy = await this.consultancyRepository.findById(id);
+    if (!consultancy) {
+      throw new NotFoundException('Consultório não encontrado');
+    }
+
+    const people = await this.peopleService.findById(consultancy.people.id);
+    if (!people) {
+      throw new NotFoundException('Pessoa não encontrada');
+    }
+
+    // Atualiza a pessoa
+    people.name = updateConsultancyDto.name;
+    people.email = updateConsultancyDto.email;
+    people.phone = updateConsultancyDto.phone;
+    people.whatsapp = updateConsultancyDto.whatsapp;
+    people.status = updateConsultancyDto.status;
+    people.updatedAt = new Date();
+
+    // Atualiza o endereço
+    people.address.street = updateConsultancyDto.address.street;
+    people.address.number = updateConsultancyDto.address.number;
+    people.address.complement = updateConsultancyDto.address.complement || null;
+    people.address.neighborhood = updateConsultancyDto.address.neighborhood;
+    people.address.cep = updateConsultancyDto.address.cep;
+    people.address.cityId = updateConsultancyDto.address.cityId.toString();
+
+    // Atualiza dados do consultório
+    consultancy.cnpj = StringUtil.cleanCNPJ(updateConsultancyDto.cnpj);
+    consultancy.razao_social = updateConsultancyDto.razao_social;
+
+    await this.peopleService.update(id, people);
     return this.consultancyRepository.update(id, consultancy);
   }
 
   async delete(id: string) {
+    const consultancy = await this.consultancyRepository.findById(id);
+    if (!consultancy) {
+      throw new NotFoundException('Consultório não encontrado');
+    }
+
+    const people = await this.peopleService.findById(consultancy.people.id);
+    if (!people) {
+      throw new NotFoundException('Pessoa não encontrada');
+    }
+
     await this.consultancyRepository.delete(id);
+    await this.peopleService.delete(people.id);
   }
 }

@@ -13,14 +13,14 @@ export class ConsultancyRepository {
 
   async findAll(): Promise<Consultancy[]> {
     return this.repository.find({
-      relations: ['people'],
+      relations: ['people', 'people.address'],
     });
   }
 
   async findById(id: string): Promise<Consultancy | null> {
     return this.repository.findOne({
       where: { id },
-      relations: ['people'],
+      relations: ['people', 'people.address'],
     });
   }
 

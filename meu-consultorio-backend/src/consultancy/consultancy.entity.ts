@@ -17,9 +17,9 @@ export class Consultancy {
   @JoinColumn({ name: 'pessoa_id' })
   people: People;
 
-  @Column()
+  @Column({ length: 14, unique: true })
   cnpj: string;
 
-  @Column()
+  @Column({ length: 100 })
   razao_social: string;
 }

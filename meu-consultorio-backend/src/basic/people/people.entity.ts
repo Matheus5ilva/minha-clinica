@@ -3,7 +3,6 @@ import {
   CreateDateColumn,
   Entity,
   PrimaryGeneratedColumn,
-  UpdateDateColumn,
 } from 'typeorm';
 
 import { Address } from '../address/address.entity';
@@ -19,7 +18,7 @@ export class People {
   @Column(() => Address, { prefix: 'endereco' })
   address: Address;
 
-  @Column({ name: 'email', nullable: false, length: 70 })
+  @Column({ name: 'email', nullable: false, length: 70, unique: true })
   email: string;
 
   @Column({ name: 'status', nullable: false, default: true })
@@ -36,14 +35,14 @@ export class People {
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP',
     precision: 0,
+    update: false,
   })
   createdAt: Date;
 
-  @UpdateDateColumn({
+  @Column({
     name: 'updated_at',
     type: 'timestamp',
-    default: () => 'CURRENT_TIMESTAMP',
-    onUpdate: 'CURRENT_TIMESTAMP',
+    nullable: true,
     precision: 0,
   })
   updatedAt: Date;
