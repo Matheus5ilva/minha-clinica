@@ -31,24 +31,12 @@ Exemplo de resposta:
 ```json
 [
   {
-    "id": "5b6ca0ea-7652-4782-8513-127646d6a6b0",
-    "name": "Nome da Clinica",
-    "email": "email@exemplo.com",
-    "phone": 1234567890,
-    "whatsapp": 1234567890,
-    "status": true,
-    "address": {
-      "street": "Rua Exemplo",
-      "number": 123,
-      "complement": null,
-      "neighborhood": "Centro",
-      "cep": "12345-678",
-      "cityId": "1"
-    },
+    "id": "709d3326-bd5e-4bdd-ab59-36750ed7e848",
+    "name": "Nome da clinica",
     "cnpj": "12345678000190",
-    "razao_social": "Nome da Empresa LTDA",
-    "createdAt": "2024-04-06T21:00:00.000Z",
-    "updatedAt": null
+    "razaoSocial": "Nome da Clinica LTDA",
+    "email": "email@exemplo.com",
+    "phone": 1234567890
   }
 ]
 ```
@@ -137,6 +125,70 @@ Payload:
 #### Excluir Consultório (DELETE /consultancy/{id})
 
 Remove um consultório do sistema.
+
+---
+
+### Gêneros (Gender)
+
+#### Listar Gêneros (GET /gender)
+
+Retorna a lista de todos os gêneros cadastrados.
+
+Exemplo de resposta:
+
+```json
+[
+  {
+    "id": "5b6ca0ea-7652-4782-8513-127646d6a6b1",
+    "name": "Masculino"
+  },
+  {
+    "id": "5b6ca0ea-7652-4782-8513-127646d6a6b2",
+    "name": "Feminino"
+  }
+]
+```
+
+#### Buscar Gênero por ID (GET /gender/{id})
+
+Retorna os detalhes de um gênero específico.
+
+Exemplo de resposta:
+
+```json
+{
+  "id": "5b6ca0ea-7652-4782-8513-127646d6a6b1",
+  "name": "Masculino"
+}
+```
+
+#### Criar Gênero (POST /gender)
+
+Cria um novo gênero.
+
+Payload:
+
+```json
+{
+  "name": "Não Binário"
+}
+```
+
+#### Atualizar Gênero (PUT /gender/{id})
+
+Atualiza um gênero existente.
+
+Payload:
+
+```json
+{
+  "name": "Outro"
+}
+```
+
+#### Excluir Gênero (DELETE /gender/{id})
+
+Remove um gênero do sistema.
 
 ## Configuração do Ambiente
 
