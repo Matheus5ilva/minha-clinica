@@ -1,8 +1,8 @@
-# MicroSaaS para Gestão de Consultórios
+# MicroSaaS para Gestão de Clínicas
 
 ## Motivação
 
-Muitos consultórios ainda não utilizam um sistema para gerenciar agenda, manter histórico dos pacientes ou acabam contratando softwares grandes com várias funcionalidades que não precisam.
+Muitas clínicas ainda não utilizam um sistema para gerenciar agenda, manter histórico dos pacientes ou acabam contratando softwares grandes com várias funcionalidades que não precisam.
 
 Este projeto nasceu para oferecer uma solução simples e customizável, onde o cliente escolhe só as funcionalidades que deseja, sem pagar por extras desnecessários.
 
